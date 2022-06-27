@@ -95,4 +95,9 @@ dependencies {
     implementation 'com.owen:tv-recyclerview:3.0.0'
 
     implementation 'com.github.getActivity:XXPermissions:13.6'
+
+    implementation ("com.github.liujingxing.rxhttp:rxhttp:2.6.5") {
+        exclude group: "com.squareup.okhttp3"
+    }
+    annotationProcessor "com.github.liujingxing.rxhttp:rxhttp-compiler:2.6.5"
 }
