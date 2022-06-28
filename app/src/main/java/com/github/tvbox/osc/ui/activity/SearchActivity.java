@@ -347,6 +347,9 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (searchExecutorService != null) {
+            searchExecutorService.shutdownNow();
+        }
         cancel();
         try {
             if (searchExecutorService != null) {
