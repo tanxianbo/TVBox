@@ -97,17 +97,6 @@ public class BoxVideoController extends GestureVideoController implements View.O
         }
     }
 
-    @Override
-    protected void setProgress(int duration, int position) {
-        // rtsp协议视频进度走完不会自动下一集，加一个根据进度回调判断自动下一集
-        if (duration > 0 && position >= duration) {
-            PlayActivity context = (PlayActivity) this.getContext();
-            context.playNext();
-        }
-
-        super.setProgress(duration, position);
-    }
-
     private OnScreenTapListener screenTapListener;
 
     public interface OnScreenTapListener {

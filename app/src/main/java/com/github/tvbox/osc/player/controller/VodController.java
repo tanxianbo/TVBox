@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.github.tvbox.osc.R;
+import com.github.tvbox.osc.ui.activity.PlayActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -127,6 +128,12 @@ public class VodController extends BaseController {
             mSeekBar.setSecondaryProgress(mSeekBar.getMax());
         } else {
             mSeekBar.setSecondaryProgress(percent * 10);
+        }
+
+        // rtsp协议视频进度走完不会自动下一集，加一个根据进度回调判断自动下一集
+        if (duration > 0 && position >= duration) {
+            PlayActivity context = (PlayActivity) this.getContext();
+            context.playNext();
         }
     }
 
