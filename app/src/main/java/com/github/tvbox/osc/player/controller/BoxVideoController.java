@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.github.tvbox.osc.R;
+import com.github.tvbox.osc.ui.activity.PlayActivity;
 
 import java.util.Map;
 
@@ -94,6 +95,17 @@ public class BoxVideoController extends GestureVideoController implements View.O
                 mLoadingProgress.setVisibility(GONE);
                 break;
         }
+    }
+
+    @Override
+    protected void setProgress(int duration, int position) {
+        // rtsp协议视频进度走完不会自动下一集，加一个根据进度回调判断自动下一集
+        if (duration > 0 && position >= duration) {
+            PlayActivity context = (PlayActivity) this.getContext();
+            context.playNext();
+        }
+
+        super.setProgress(duration, position);
     }
 
     private OnScreenTapListener screenTapListener;

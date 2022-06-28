@@ -525,7 +525,8 @@ public class VideoView<P extends AbstractPlayer> extends FrameLayout
         if (!isMute() && mAudioFocusHelper != null) {
             mAudioFocusHelper.requestFocus();
         }
-        if (mCurrentPosition > 0) {
+        //要满足播放进度小于总长度，否则rtsp协议黑屏
+        if (mCurrentPosition > 0 && mCurrentPosition < mMediaPlayer.getDuration()) {
             seekTo(mCurrentPosition);
         }
     }
