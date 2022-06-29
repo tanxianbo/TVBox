@@ -17,7 +17,6 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.bean.IJKCode;
 import com.github.tvbox.osc.bean.ParseBean;
-import com.github.tvbox.osc.ui.activity.PlayActivity;
 import com.github.tvbox.osc.ui.adapter.ParseAdapter;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.PlayerHelper;
@@ -251,7 +250,7 @@ public class VodController extends BaseController {
                     int step = Hawk.get(HawkConfig.PLAY_TIME_STEP, 5);
                     int st = mPlayerConfig.getInt("st");
                     st += step;
-                    if (st > 60 * 10)
+                    if (st > 60 * 3) //3分钟
                         st = 0;
                     mPlayerConfig.put("st", st);
                     updatePlayerCfgView();
@@ -268,7 +267,7 @@ public class VodController extends BaseController {
                     int step = Hawk.get(HawkConfig.PLAY_TIME_STEP, 5);
                     int et = mPlayerConfig.getInt("et");
                     et += step;
-                    if (et > 60 * 10)
+                    if (et > 60 * 3) //3分钟
                         et = 0;
                     mPlayerConfig.put("et", et);
                     updatePlayerCfgView();
@@ -355,9 +354,11 @@ public class VodController extends BaseController {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (position + (et * 1000) >= duration) {
+        //自动下一集
+        if (duration > 0 && position + (et * 1000) >= duration) {
             listener.playNext();
         }
+
         mCurrentTime.setText(PlayerUtils.stringForTime(position));
         mTotalTime.setText(PlayerUtils.stringForTime(duration));
         if (duration > 0) {
@@ -374,11 +375,7 @@ public class VodController extends BaseController {
             mSeekBar.setSecondaryProgress(percent * 10);
         }
 
-        // rtsp协议视频进度走完不会自动下一集，加一个根据进度回调判断自动下一集
-        if (duration > 0 && position >= duration) {
-            PlayActivity context = (PlayActivity) this.getContext();
-            context.playNext();
-        }
+
     }
 
     private boolean simSlideStart = false;

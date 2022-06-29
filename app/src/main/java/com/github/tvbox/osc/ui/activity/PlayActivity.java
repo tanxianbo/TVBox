@@ -329,7 +329,7 @@ public class PlayActivity extends BaseActivity {
     private JSONObject mVodPlayerCfg;
     private String sourceKey;
 
-    public void playNext() {
+    private void playNext() {
         boolean hasNext = true;
         if (mVodInfo == null || mVodInfo.seriesMap.get(mVodInfo.playFlag) == null) {
             hasNext = false;
@@ -344,7 +344,7 @@ public class PlayActivity extends BaseActivity {
         play();
     }
 
-    public void playPrevious() {
+    private void playPrevious() {
         boolean hasPre = true;
         if (mVodInfo == null || mVodInfo.seriesMap.get(mVodInfo.playFlag) == null) {
             hasPre = false;
