@@ -22,7 +22,6 @@
                 android:id="@+id/etSearch"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/vs_50"
-                android:enabled="false"
                 android:background="@drawable/input_search"
                 android:hint="请输入要搜索的内容"
                 android:inputType="text"
@@ -102,7 +101,7 @@
 
     <LinearLayout
         android:id="@+id/llWord"
-        android:layout_width="@dimen/vs_180"
+        android:layout_width="@dimen/vs_200"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingTop="@dimen/vs_20"
