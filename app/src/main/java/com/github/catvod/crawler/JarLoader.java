@@ -2,6 +2,7 @@ package com.github.catvod.crawler;
 
 import android.content.Context;
 
+import com.github.catvoid.spider.Iptv;
 import com.github.tvbox.osc.base.App;
 
 import org.json.JSONObject;
@@ -72,7 +73,12 @@ public class JarLoader {
         if (classLoader == null)
             return new SpiderNull();
         try {
-            Spider sp = (Spider) classLoader.loadClass("com.github.catvod.spider." + clsKey).newInstance();
+            Spider sp = null;
+            if ("Iptv".equals(clsKey)) {
+                sp = new Iptv();
+            } else {
+                sp = (Spider) classLoader.loadClass("com.github.catvod.spider." + clsKey).newInstance();
+            }
             sp.init(App.getInstance(), ext);
             spiders.put(key, sp);
             return sp;
