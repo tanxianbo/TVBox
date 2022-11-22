@@ -2,6 +2,7 @@ package com.github.catvod.crawler;
 
 import android.content.Context;
 
+import com.github.catvoid.spider.Iptv;
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.util.MD5;
 import com.github.tvbox.osc.util.js.SpiderJS;
@@ -157,7 +158,12 @@ public class JarLoader {
         if (classLoader == null)
             return new SpiderNull();
         try {
-            Spider sp = (Spider) classLoader.loadClass("com.github.catvod.spider." + clsKey).newInstance();
+            Spider sp = null;
+            if ("Iptv".equals(clsKey)) {
+                sp = new Iptv();//集成iptv插件
+            } else {
+                sp = (Spider) classLoader.loadClass("com.github.catvod.spider." + clsKey).newInstance();
+            }
             sp.init(App.getInstance(), ext);
             if (!jar.isEmpty()) {
                 sp.homeContent(false); // 增加此行 应该可以解决部分写的有问题源的历史记录问题 但会增加这个源的首次加载时间 不需要可以已删掉
