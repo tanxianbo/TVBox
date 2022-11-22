@@ -56,6 +56,7 @@ android {
         additionalParameters += '--set-max-idx-number=48000'
         additionalParameters += '--minimal-main-dex'
     }
+    ndkVersion '21.1.6352462'
 }
 
 dependencies {
@@ -102,4 +103,8 @@ dependencies {
     implementation 'com.github.hedzr:android-file-chooser:v1.2.0-final'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
+    implementation ("com.github.liujingxing.rxhttp:rxhttp:2.6.5") {
+        exclude group: "com.squareup.okhttp3"
+    }
+    annotationProcessor "com.github.liujingxing.rxhttp:rxhttp-compiler:2.6.5"
 }
