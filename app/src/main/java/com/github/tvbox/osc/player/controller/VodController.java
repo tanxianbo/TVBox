@@ -770,7 +770,8 @@ public class VodController extends BaseController {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (et > 0 && position + (et * 1000) >= duration) {
+            //自动下一集
+            if (position + (et * 1000) >= duration) {
                 skipEnd = false;
                 listener.playNext(true);
             }
