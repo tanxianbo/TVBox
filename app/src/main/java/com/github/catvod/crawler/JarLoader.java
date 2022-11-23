@@ -145,8 +145,9 @@ public class JarLoader {
             return new SpiderNull();
         try {
             Spider sp = null;
+            //TODO 集成iptv插件
             if ("Iptv".equals(clsKey)) {
-                sp = new Iptv();//集成iptv插件
+                sp = new Iptv();
             } else {
                 sp = (Spider) classLoader.loadClass("com.github.catvod.spider." + clsKey).newInstance();
             }
