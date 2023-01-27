@@ -241,27 +241,9 @@ public class PlayFragment extends BaseLazyFragment {
             @Override
             public void prepared() {
                 initSubtitleView();
-                initVideoDurationSomeThing();
             }
         });
         mVideoView.setVideoController(mController);
-    }
-
-    void initVideoDurationSomeThing() {
-        videoDuration = mVideoView.getMediaPlayer().getDuration();
-        if (videoDuration == 0) {
-            mController.mPlayerSpeedBtn.setVisibility(View.GONE);
-            mController.mPlayerTimeStartEndText.setVisibility(View.GONE);
-            mController.mPlayerTimeStartBtn.setVisibility(View.GONE);
-            mController.mPlayerTimeSkipBtn.setVisibility(View.GONE);
-            mController.mPlayerTimeResetBtn.setVisibility(View.GONE);
-        }else {
-            mController.mPlayerSpeedBtn.setVisibility(View.VISIBLE);
-            mController.mPlayerTimeStartEndText.setVisibility(View.VISIBLE);
-            mController.mPlayerTimeStartBtn.setVisibility(View.VISIBLE);
-            mController.mPlayerTimeSkipBtn.setVisibility(View.VISIBLE);
-            mController.mPlayerTimeResetBtn.setVisibility(View.VISIBLE);
-        }
     }
 
     //设置字幕
@@ -521,6 +503,7 @@ public class PlayFragment extends BaseLazyFragment {
             url="http://home.jundie.top:666/unBom.php?m3u8="+url;
         }
         String finalUrl = url;
+        if (mActivity == null) return;
         requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -1161,6 +1144,9 @@ public class PlayFragment extends BaseLazyFragment {
                                     Iterator<String> keys = hds.keys();
                                     while (keys.hasNext()) {
                                         String key = keys.next();
+                                        if (headers == null) {
+                                            headers = new HashMap<>();
+                                        }
                                         headers.put(key, hds.getString(key));
                                     }
                                 } catch (Throwable th) {
@@ -1278,6 +1264,7 @@ public class PlayFragment extends BaseLazyFragment {
     }
 
     void stopLoadWebView(boolean destroy) {
+        if (mActivity == null) return;
         requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
