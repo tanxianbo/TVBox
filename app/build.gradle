@@ -22,8 +22,27 @@ android {
         exclude 'META-INF/DEPENDENCIES'
     }
 
+    signingConfigs {
+        debug {
+            File strFile = new File("../../myKey.jks")
+            storeFile file(strFile)
+            storePassword "19900322"
+            keyPassword "19900322"
+            keyAlias "key0"
+        }
+        release {
+            File strFile = new File("../../myKey.jks")
+            storeFile file(strFile)
+            storePassword "19900322"
+            keyPassword "19900322"
+            keyAlias "key0"
+
+        }
+    }
+
     buildTypes {
         debug {
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             minifyEnabled false
 
@@ -32,6 +51,7 @@ android {
             }
         }
         release {
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             minifyEnabled true
 
@@ -103,4 +123,8 @@ dependencies {
     implementation 'com.github.hedzr:android-file-chooser:v1.2.0-final'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
+    implementation("com.github.liujingxing.rxhttp:rxhttp:2.6.5") {
+        exclude group: "com.squareup.okhttp3"
+    }
+    annotationProcessor "com.github.liujingxing.rxhttp:rxhttp-compiler:2.6.5"
 }

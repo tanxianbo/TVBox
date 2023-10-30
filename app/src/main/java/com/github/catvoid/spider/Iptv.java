@@ -15,7 +15,7 @@ public class Iptv extends Spider {
     private Context context = null;
 
     @Override
-    public void init(Context context, String extend) {
+    public void init(Context context, String extend) throws Exception {
         this.context = context;
         this.siteUrl = extend;
         super.init(context);
