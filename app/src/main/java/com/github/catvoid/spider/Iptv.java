@@ -1,14 +1,18 @@
 package com.github.catvoid.spider;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 
 import com.github.catvod.crawler.Spider;
-import com.github.catvod.crawler.SpiderReq;
-import com.github.catvod.crawler.SpiderUrl;
+import com.github.catvod.net.OkHttp;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import okhttp3.Call;
 
 public class Iptv extends Spider {
     private String siteUrl = "";
@@ -34,10 +38,8 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String homeContent(boolean filter) {
-        SpiderUrl su = new SpiderUrl(siteUrl + "/homeContent", getHeaders());
-        String json = SpiderReq.get(su).content;
-        return json;
+    public String homeContent(boolean filter) throws Exception {
+        return this.httpRequest("/homeContent", null);
     }
 
     /**
@@ -50,10 +52,10 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) {
+    public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         extend.put("tid", tid);
         extend.put("pg", pg);
-        String json = SpiderReq.postForm(siteUrl + "/categoryContent", extend, getHeaders()).content;
+        String json = this.httpRequest("/categoryContent", extend);
         return json;
     }
 
@@ -64,10 +66,10 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String detailContent(List<String> ids) {
+    public String detailContent(List<String> ids) throws Exception {
         HashMap<String, String> param = new HashMap<>();
         param.put("id", ids.get(0));
-        String json = SpiderReq.postForm(siteUrl + "/detailContent", param, getHeaders()).content;
+        String json = this.httpRequest("/detailContent", param);
         return json;
     }
 
@@ -80,12 +82,12 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String playerContent(String flag, String id, List<String> vipFlags) {
+    public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
         HashMap<String, String> param = new HashMap<>();
         param.put("flag", flag);
         param.put("id", id);
         param.put("vipFlags", TextUtils.join(",", vipFlags));
-        String json = SpiderReq.postForm(siteUrl + "/playerContent", param, getHeaders()).content;
+        String json = this.httpRequest("/playerContent", param);
         return json;
     }
 
@@ -97,11 +99,31 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String searchContent(String key, boolean quick) {
+    public String searchContent(String key, boolean quick) throws Exception {
         HashMap<String, String> param = new HashMap<>();
         param.put("key", key);
         param.put("quick", quick ? "1" : "0");
-        String json = SpiderReq.postForm(siteUrl + "/searchContent", param, getHeaders()).content;
+        String json = this.httpRequest("/searchContent", param);
         return json;
+    }
+
+    private String httpRequest(String path, HashMap<String, String> params) throws Exception {
+        Call call = null;
+        if (params == null) {
+            call = OkHttp.newCall(siteUrl + path);
+        } else {
+            ArrayMap<String, String> stringStringArrayMap = convertHashMapToArrayMap(params);
+            call = OkHttp.newCall(siteUrl + path, stringStringArrayMap);
+        }
+        return call.execute().body().string();
+    }
+
+    @SuppressLint({"NewApi", "LocalSuppress"})
+    private ArrayMap<String, String> convertHashMapToArrayMap(HashMap<String, String> hashMap) {
+        ArrayMap<String, String> arrayMap = new ArrayMap<>();
+        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+            arrayMap.put(entry.getKey(), entry.getValue());
+        }
+        return arrayMap;
     }
 }
