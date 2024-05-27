@@ -237,8 +237,8 @@ public abstract class BaseController extends BaseVideoController implements Gest
         return true;
     }
 
-    /**
-     * 双击
+    /** TODO
+     * 屏幕双击 播放和暂停
      */
     @Override
     public boolean onDoubleTap(MotionEvent e) {

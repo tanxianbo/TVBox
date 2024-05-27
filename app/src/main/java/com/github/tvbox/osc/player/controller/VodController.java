@@ -314,6 +314,7 @@ public class VodController extends BaseController {
         mPlayerRetry.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO 重播
                 listener.replay(true);
                 hideBottom();
             }
@@ -321,6 +322,7 @@ public class VodController extends BaseController {
         mPlayrefresh.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO 刷新
                 listener.replay(false);
                 hideBottom();
             }
@@ -913,6 +915,7 @@ public class VodController extends BaseController {
                 }
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
                 if (isInPlayback) {
+                    // TODO 遥控器 播放和暂停
                     togglePlay();
                     return true;
                 }

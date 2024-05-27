@@ -6,6 +6,10 @@ import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 
+import java.util.Date;
+
+import xyz.doikki.videoplayer.player.VideoView;
+
 /**
  * 此类的目的是为了在ControlComponent中既能调用VideoView的api又能调用BaseVideoController的api，
  * 并对部分api做了封装，方便使用
@@ -14,6 +18,7 @@ public class ControlWrapper implements MediaPlayerControl, IVideoController {
 
     private MediaPlayerControl mPlayerControl;
     private IVideoController mController;
+    private Date pauseTime;
 
     public ControlWrapper(@NonNull MediaPlayerControl playerControl, @NonNull IVideoController controller) {
         mPlayerControl = playerControl;
@@ -145,9 +150,15 @@ public class ControlWrapper implements MediaPlayerControl, IVideoController {
      */
     public void togglePlay() {
         if (isPlaying()) {
+            pauseTime = new Date();
             pause();
         } else {
-            start();
+            if (new Date().getTime() - pauseTime.getTime() > 1000 * 30 && ((VideoView) mPlayerControl).getUrl().startsWith("rtsp://")) {
+                // TODO rtsp视频暂停超过30秒，要刷新下
+                replay(false);
+            } else {
+                start();
+            }
         }
     }
 

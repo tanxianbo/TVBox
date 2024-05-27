@@ -617,6 +617,13 @@ public class VideoView<P extends AbstractPlayer> extends FrameLayout
     }
 
     /**
+     * 取视频地址
+     * @return
+     */
+    public String getUrl() {
+        return this.mUrl;
+    }
+    /**
      * 设置视频地址
      */
     public void setUrl(String url) {
