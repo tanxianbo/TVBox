@@ -5,7 +5,7 @@ android {
 
     defaultConfig {
         applicationId 'com.github.tvbox.osc'
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName '1.0.0'
@@ -24,14 +24,14 @@ android {
 
     signingConfigs {
         debug {
-            File strFile = new File("../../myKey.jks")
+            File strFile = new File("../../../myKey.jks")
             storeFile file(strFile)
             storePassword "19900322"
             keyPassword "19900322"
             keyAlias "key0"
         }
         release {
-            File strFile = new File("../../myKey.jks")
+            File strFile = new File("../../../myKey.jks")
             storeFile file(strFile)
             storePassword "19900322"
             keyPassword "19900322"
@@ -123,7 +123,7 @@ dependencies {
     // implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
     implementation 'com.owen:tv-recyclerview:3.0.0'
 
-    implementation 'com.github.getActivity:XXPermissions:13.6'
+    implementation 'com.github.getActivity:XXPermissions:18.5'
     implementation 'org.jsoup:jsoup:1.14.1'
     implementation 'com.github.hedzr:android-file-chooser:v1.2.0-final'
     implementation 'commons-io:commons-io:2.11.0'

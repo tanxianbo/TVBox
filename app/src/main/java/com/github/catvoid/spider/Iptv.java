@@ -6,20 +6,20 @@ import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import com.github.catvod.crawler.Spider;
-import com.github.catvod.net.OkHttp;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.request.GetRequest;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import okhttp3.Call;
 
 public class Iptv extends Spider {
     private String siteUrl = "";
     private Context context = null;
 
     @Override
-    public void init(Context context, String extend) throws Exception {
+    public void init(Context context, String extend) {
         this.context = context;
         this.siteUrl = extend;
         super.init(context);
@@ -38,7 +38,7 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String homeContent(boolean filter) throws Exception {
+    public String homeContent(boolean filter) {
         return this.httpRequest("/homeContent", null);
     }
 
@@ -52,7 +52,7 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
+    public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) {
         extend.put("tid", tid);
         extend.put("pg", pg);
         String json = this.httpRequest("/categoryContent", extend);
@@ -66,7 +66,7 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String detailContent(List<String> ids) throws Exception {
+    public String detailContent(List<String> ids) {
         HashMap<String, String> param = new HashMap<>();
         param.put("id", ids.get(0));
         String json = this.httpRequest("/detailContent", param);
@@ -82,7 +82,7 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
+    public String playerContent(String flag, String id, List<String> vipFlags) {
         HashMap<String, String> param = new HashMap<>();
         param.put("flag", flag);
         param.put("id", id);
@@ -99,7 +99,7 @@ public class Iptv extends Spider {
      * @return
      */
     @Override
-    public String searchContent(String key, boolean quick) throws Exception {
+    public String searchContent(String key, boolean quick) {
         HashMap<String, String> param = new HashMap<>();
         param.put("key", key);
         param.put("quick", quick ? "1" : "0");
@@ -107,15 +107,16 @@ public class Iptv extends Spider {
         return json;
     }
 
-    private String httpRequest(String path, HashMap<String, String> params) throws Exception {
-        Call call = null;
-        if (params == null) {
-            call = OkHttp.newCall(siteUrl + path);
-        } else {
-            ArrayMap<String, String> stringStringArrayMap = convertHashMapToArrayMap(params);
-            call = OkHttp.newCall(siteUrl + path, stringStringArrayMap);
+    private String httpRequest(String path, HashMap<String, String> params) {
+        GetRequest<String> request = OkGo.<String>get(siteUrl + path).headers("User-Agent", "Mozilla/5.0");
+        if (params != null) {
+            request.params(params);
         }
-        return call.execute().body().string();
+        try {
+            return request.execute().body().string();
+        } catch (IOException e) {
+            return "";
+        }
     }
 
     @SuppressLint({"NewApi", "LocalSuppress"})
